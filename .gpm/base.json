@@ -1,0 +1,8 @@
+{
+    "base_path": "/var/projects/buzz/buzz-intern-server/dj-geo/.gpm/base.json",
+    "gpm_path": "/var/projects/buzz/buzz-intern-server/dj-geo/.gpm",
+    "name": "dj-geo",
+    "project_type": "module",
+    "repository_url": "https://github.com/px57/dj-geo.git",
+    "root_path": "/var/projects/buzz/buzz-intern-server/dj-geo"
+}
