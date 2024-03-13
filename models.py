@@ -11,10 +11,6 @@ class Countries(BaseMetadataModel):
     """
     The countries model.
     """
-    name = models.CharField(
-        max_length=100,
-        unique=True,
-    )
     code = models.CharField(
         max_length=10,
         choices=GEO_RULESTACK.rules_choices('selecteable_countries'),
@@ -30,7 +26,7 @@ class Countries(BaseMetadataModel):
         verbose_name_plural = 'Countries'
 
     def __str__(self):
-        return self.name
+        return self.code
         
 class Cities(BaseMetadataModel):
     """
@@ -80,3 +76,4 @@ class Languages(BaseMetadataModel):
 
         ),
     )
+ 

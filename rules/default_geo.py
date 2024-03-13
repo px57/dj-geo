@@ -1,4 +1,6 @@
 
+from django.conf import settings
+
 from kernel.interfaces.interfaces import InterfaceManager
 
 import pycountry
@@ -7,6 +9,26 @@ class DefaultRuleClass(InterfaceManager):
     """
     The default rule class. 
     """
+
+    """
+    Is the service mail to be used.
+    """
+    service = settings.GEO_SERVICE
+
+    """
+    The service configuration name.
+    """
+    service_config_name = 'GOOGLEMAP'
+
+    """
+    Settings config name.
+    """
+    settings_config_name = 'GEO_CONFIG_AUTHENTIFICATION_KEYS'
+
+    """
+    Service module.
+    """
+    service_module = 'geo.__services__'
 
     """
     The selecteable countries code list.

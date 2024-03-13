@@ -7,7 +7,7 @@ class CountriesAdmin(admin.ModelAdmin):
     """
     The countries admin.
     """
-    list_display = ('name', 'code',)
+    list_display = ('code',)
 
 @admin.register(models.Cities)
 class CitiesAdmin(admin.ModelAdmin):
