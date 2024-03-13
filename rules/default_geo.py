@@ -72,4 +72,5 @@ class DefaultRuleClass(InterfaceManager):
         """
         for country in self.selecteable_countries():
             choices.append((country['code'], country['name']))
+        
         return choices
