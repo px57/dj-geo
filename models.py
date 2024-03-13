@@ -77,3 +77,8 @@ class Languages(BaseMetadataModel):
         ),
     )
  
+class CountriesRelated(BaseMetadataModel):
+    """
+    The countries related model.
+    """
+    
