@@ -15,10 +15,15 @@ urlpatterns = [
         'find_city/',
         views.find_city,
         name='geo__find_city'
-    ), 
+    ),
     path(
         'select_city/',
         views.select_city,
         name='geo__select_city'
-    ), 
+    ),
+    path(
+        'selecteable_countries/',
+        views.selecteable_countries,
+        name='geo__selecteable_countries'
+    ),
 ]
