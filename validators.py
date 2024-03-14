@@ -1,6 +1,8 @@
 
 from django import forms
 
+from geo.models import Countries, Cities
+
 class CityValidator(forms.Field):
     """
         @description:
@@ -25,15 +27,20 @@ class CountryValidator(forms.Field):
     """
     default_validators = []
 
-    def __init__(self, load_bank_info=True, required=True):
+    def __init__(
+            self, 
+            required=True
+    ):
         super().__init__()
-        self.load_bank_info = load_bank_info
         self.required = required
 
     def to_python(self, country):
         """
             @description:
         """
-        country = country.lower()
-        return country
+        country = country.upper()
+        dbCountry = Countries.objects.filter(code=country).first()
+        if dbCountry is None:
+            raise forms.ValidationError('Country not found')
+        return dbCountry
     

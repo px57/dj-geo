@@ -16,7 +16,14 @@ class SelectCountryForm(forms.Form):
     """
     Form to select a country.
     """
-    country = validators.CountryValidator(
+    code = validators.CountryValidator(
+        required=True,
+    )
+    
+    relatedModelId = forms.IntegerField(
         required=True
     )
 
+    relatedModel = forms.CharField(
+        required=True
+    )
