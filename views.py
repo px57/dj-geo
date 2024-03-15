@@ -8,27 +8,48 @@ from geo.rules.stack import GEO_RULESTACK
 from geo.models import Countries, Cities, CitiesRelated, CountriesRelated
 from geo.forms import SelectCityForm, SelectCountryForm
 
+
+from kernel.http.exceptions import ExitResponse
+import requests
+
 import pycountry
 
 @load_response(
     stack=GEO_RULESTACK,
     form=AutocompleteForm,
     json=True,
+    load_params=True,
 )
-def find_city(request, res=None):
+def find_city(
+    request, 
+    res=None,
+    load_params=True,
+    **kwargs
+):
     """
     Find the country list and return the response.
+
+    Args:
+        request (Request): The request
+        res (Response): The response
+        **kwargs: The keyword arguments
     """
     _in = res.get_interface()
-    # -> Call the service to get the autocomplete list
-    # -> Save the list of cities in the response
-    # -> return serialized response
+    dbCountry = []  # -> The list of countries to filter the cities.
+
+    if _in.find_city_in_country:
+        dbCountry = _in.find_city__getcountry()
+
     return res.success()
 
 @load_response(
     stack=GEO_RULESTACK,
 )
-def selecteable_countries(request, res=None):
+def selecteable_countries(
+    request, 
+    res=None, 
+    **kwargs
+):
     """
     Get the selecteable countries and return the response.
     """
@@ -61,24 +82,43 @@ def selecteable_countries(request, res=None):
     stack=GEO_RULESTACK,
     form=SelectCountryForm,
     json=True,
-    load_params=True
 )
-def select_country(request, res=None):
+def select_country(
+    request, 
+    res=None, 
+    **kwargs
+):
     """
     Select the country and return the response.
     """
     _in = res.get_interface()
     cleaned_data = request.form.cleaned_data
-    print (cleaned_data)
-    # dbCitiesRelated = CitiesRelated(
-    #     country=cleaned_data['code'],
-    #     relatedModelId=cleaned_data['relatedModelId'],
-    #     relatedModel=cleaned_data['relatedModel']
-    # ).save()
+
+    countries_selected_max = _in.countries_selected_max
+    if countries_selected_max is not None:
+        dBcountries_selected = CountriesRelated.objects.filter(
+            relatedModelId=cleaned_data['relatedModelId'],
+            interface=_in.label,
+        )
+        if dBcountries_selected.count() >= countries_selected_max:
+            return _in.event_max_countries_selected(dBcountries_selected)
+
+    # -> Create the country related.
+    dbCountriesSelected = CountriesRelated(
+        interface=_in.label,
+        country=cleaned_data['code'],
+        relatedModelId=cleaned_data['relatedModelId'],
+        relatedModel=cleaned_data['relatedModel']
+    ).save()
+    res.countries_selected = [dbCountriesSelected.serialize(request)]
     return res.success()
 
 @load_response(stack=GEO_RULESTACK)
-def select_city(request, res=None):
+def select_city(
+    request, 
+    res=None, 
+    **kwargs
+):
     """
     Select the city and return the response.
     """

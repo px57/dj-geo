@@ -1,6 +1,7 @@
 
 from django.conf import settings
 
+# from kernel.http import Response
 from kernel.interfaces.interfaces import InterfaceManager
 
 import pycountry
@@ -74,3 +75,53 @@ class DefaultRuleClass(InterfaceManager):
             choices.append((country['code'], country['name']))
         
         return choices
+    
+    # **************************** [Countries] ****************************
+    """
+    The maximum number of countries selected, in the CountriesRelated model.
+
+    Choices:
+        (int) -> The maximum number of countries selected
+        (None) -> No limit
+    """
+    countries_selected_max = 1
+
+    def event_max_countries_selected(self, dBcountries_selected):
+        """
+        Event when the maximum number of countries selected is reached.
+        """
+        cleaned_data = self.request.form.cleaned_data
+        dBcountries_selected.update(        
+            country=cleaned_data['code'],
+            relatedModelId=cleaned_data['relatedModelId'],
+            relatedModel=cleaned_data['relatedModel']
+        )
+        self.res.countries_selected = [
+            country.serialize(self.request) for country in dBcountries_selected
+        ]
+        return self.res.success()
+    
+    # **************************** [Find Cities] ****************************
+    """
+    Activate the find city in country.
+    """
+    find_city_in_country = False
+
+    def find_city__getcountry(self):
+        """
+        Get the country.
+        """
+        if self.request.POST.get('country') is None:
+            raise ValueError('The request.POST[\'country_code\'] is required.')
+        
+        from geo.models import Countries, CountriesRelated
+        country_code = self.request.POST.get('country')
+        if type(country_code) is str:
+            dbCountry = Countries.objects.filter(code=country_code).first()
+            if dbCountry is None:
+                raise ValueError('The country code not found, in the database.')
+            return dbCountry
+        elif type(country_code) is CountriesRelated:
+            return [country_code.country]
+        elif type(country_code) is Countries:
+            return [country_code]
