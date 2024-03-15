@@ -25,7 +25,7 @@ def autocomplete_place(input_text, api_key):
         return []
 
 if __name__ == "__main__":
-    api_key = 'AIzaSyBPmOKr6x00xyj0wJV1xuOUwZslnPXyOaU'
+    api_key = 'AIzaSyAf7hCv-sLrjdJ9vzWujBZPxHqrfB6ziMs'
     input_text = input("Entrez votre recherche : ")
     places = autocomplete_place(input_text, api_key)
     print (places)
