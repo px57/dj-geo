@@ -26,13 +26,16 @@ class Countries(BaseMetadataModel):
         verbose_name = 'Country'
         verbose_name_plural = 'Countries'
 
-    def __str__(self):
-        return self.code
-        
 class Cities(BaseMetadataModel):
     """
     The cities model.
     """
+    reference_code = models.CharField(
+        max_length=250,
+        unique=True,
+        default='',
+    )
+
     latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -49,6 +52,12 @@ class Cities(BaseMetadataModel):
     country = models.ForeignKey(
         Countries,
         on_delete=models.CASCADE,
+    )
+
+    api_data = models.JSONField(
+        null=True,
+        blank=True,
+        default=dict,
     )
 
     class Meta:

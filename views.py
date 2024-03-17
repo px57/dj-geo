@@ -40,6 +40,10 @@ def find_city(
     if _in.find_city_in_country:
         dbCountry = _in.find_city__getcountry()
 
+    city_list = _in.find_city(
+        query=request.form.cleaned_data['query'],
+        country=dbCountry
+    )
     return res.success()
 
 @load_response(

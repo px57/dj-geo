@@ -125,3 +125,11 @@ class DefaultRuleClass(InterfaceManager):
             return [country_code.country]
         elif type(country_code) is Countries:
             return [country_code]
+
+    def find_city(self, *args, **kwargs):
+        """
+        Find the country list and return the response.
+        """
+        self.gpm_service.set_config(self)
+        self.gpm_service.find_city(*args, **kwargs)
+        print ('oeouaoeuaoeu')
