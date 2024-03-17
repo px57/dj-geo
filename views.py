@@ -44,6 +44,9 @@ def find_city(
         query=request.form.cleaned_data['query'],
         country=dbCountry
     )
+    res.city_list = [
+        city.serialize(request) for city in city_list
+    ]
     return res.success()
 
 @load_response(

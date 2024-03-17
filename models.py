@@ -39,10 +39,12 @@ class Cities(BaseMetadataModel):
     latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
+        default=0,
     )
     longitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
+        default=0,
     )
 
     name = models.CharField(
@@ -70,6 +72,13 @@ class Cities(BaseMetadataModel):
 
     def __str__(self):
         return self.name
+    
+    def serialize(self, request):
+        serialize = super().serialize(request)
+        del serialize['api_data']
+        del serialize['reference_code']
+        serialize['country'] = self.country.serialize(request)
+        return serialize
     
 class Languages(BaseMetadataModel):
     """

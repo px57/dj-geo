@@ -131,5 +131,4 @@ class DefaultRuleClass(InterfaceManager):
         Find the country list and return the response.
         """
         self.gpm_service.set_config(self)
-        self.gpm_service.find_city(*args, **kwargs)
-        print ('oeouaoeuaoeu')
+        return self.gpm_service.find_city(*args, **kwargs)
