@@ -103,6 +103,15 @@ class DefaultRuleClass(InterfaceManager):
     
     # **************************** [Find Cities] ****************************
     """
+    The maximum number of cities selected, in the CitiesRelated model.
+
+    Choices:
+        (int) -> The maximum number of cities selected
+        (None) -> No limit
+    """
+    cities_selected_max = 1
+
+    """
     Activate the find city in country.
     """
     find_city_in_country = False
@@ -132,3 +141,18 @@ class DefaultRuleClass(InterfaceManager):
         """
         self.gpm_service.set_config(self)
         return self.gpm_service.find_city(*args, **kwargs)
+    
+    def event_max_cities_selected(self, dBcities_selected):
+        """
+        Event when the maximum number of cities selected is reached.
+        """
+        cleaned_data = self.request.form.cleaned_data
+        dBcities_selected.update(
+            city=cleaned_data['city_id'],
+            relatedModelId=cleaned_data['relatedModelId'],
+            relatedModel=cleaned_data['relatedModel']
+        )
+        self.res.cities_selected = [
+            city.serialize(self.request) for city in dBcities_selected
+        ]
+        return self.res.success()

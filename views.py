@@ -120,7 +120,12 @@ def select_country(
     res.countries_selected = [dbCountriesSelected.serialize(request)]
     return res.success()
 
-@load_response(stack=GEO_RULESTACK)
+@load_response(
+        stack=GEO_RULESTACK,
+        form=SelectCityForm,
+        json=True,
+        load_params=True,
+    )
 def select_city(
     request, 
     res=None, 
@@ -130,6 +135,25 @@ def select_city(
     Select the city and return the response.
     """
     _in = res.get_interface()
+    cleaned_data = request.form.cleaned_data
+
+    dbCity = cleaned_data.get('city_id')
+    cities_selected_max = _in.cities_selected_max
+    if cities_selected_max is not None:
+        dBcities_selected = CitiesRelated.objects.filter(
+            relatedModelId=cleaned_data['relatedModelId'],
+            interface=_in.label,
+        )
+        if dBcities_selected.count() >= cities_selected_max:
+            return _in.event_max_cities_selected(dBcities_selected)
+    
+    # -> Create the city related.
+    dbCitiesSelected = CitiesRelated(
+        interface=_in.label,
+        city=dbCity,
+        relatedModelId=cleaned_data['relatedModelId'],
+        relatedModel=cleaned_data['relatedModel']
+    ).save()
 
     return res.success()
 

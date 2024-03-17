@@ -9,17 +9,18 @@ class CityValidator(forms.Field):
     """
     default_validators = []
 
-    def __init__(self, load_bank_info=True, required=True):
+    def __init__(self, required=True):
         super().__init__()
-        self.load_bank_info = load_bank_info
         self.required = required
 
-    def to_python(self, city):
+    def to_python(self, city_id):
         """
             @description:
         """
-        city = city.lower()
-        return city
+        dbCity = Cities.objects.filter(id=city_id).first()
+        if dbCity is None:
+            raise forms.ValidationError('City not found')
+        return dbCity
     
 class CountryValidator(forms.Field):
     """
@@ -43,4 +44,3 @@ class CountryValidator(forms.Field):
         if dbCountry is None:
             raise forms.ValidationError('Country not found')
         return dbCountry
-    

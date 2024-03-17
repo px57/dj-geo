@@ -3,6 +3,7 @@ from django import forms
 
 from geo import validators
 
+from kernel.forms.validators import RelatedModelValidator
 
 class SelectCityForm(forms.Form):
     """
@@ -24,6 +25,22 @@ class SelectCountryForm(forms.Form):
         required=True
     )
 
-    relatedModel = forms.CharField(
+    relatedModel = RelatedModelValidator(
+        required=True
+    )
+
+class SelectCityForm(forms.Form):
+    """
+    Form to select a city.
+    """
+    city_id = validators.CityValidator(
+        required=True
+    )
+
+    relatedModelId = forms.IntegerField(
+        required=True
+    )
+
+    relatedModel = RelatedModelValidator(
         required=True
     )
