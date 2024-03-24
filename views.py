@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
+from django.views.decorators.cache import cache_page
+
 
 from kernel.http.decorators import load_response
 from kernel.forms.default_forms import AutocompleteForm
@@ -49,6 +51,7 @@ def find_city(
     ]
     return res.success()
 
+@cache_page(60 * 15)
 @load_response(
     stack=GEO_RULESTACK,
 )
