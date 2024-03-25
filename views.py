@@ -3,15 +3,15 @@ from django.db.models import Q
 from django.views.decorators.cache import cache_page
 
 
-from kernel.http.decorators import load_response
-from kernel.forms.default_forms import AutocompleteForm
+from gpm.http.decorators import load_response
+from gpm.forms.default_forms import AutocompleteForm
 
 from geo.rules.stack import GEO_RULESTACK
 from geo.models import Countries, Cities, CitiesRelated, CountriesRelated
 from geo.forms import SelectCityForm, SelectCountryForm
 
 
-from kernel.http.exceptions import ExitResponse
+from gpm.http.exceptions import ExitResponse
 import requests
 
 import pycountry

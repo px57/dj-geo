@@ -1,8 +1,8 @@
 from django.db import models
 from django.forms.models import model_to_dict
 
-from kernel.models.base_metadata_model import BaseMetadataModel
-from kernel.models.fetch_all_models_file import choicesListRelatedModels
+from gpm.models.base_metadata_model import BaseMetadataModel
+from gpm.models.fetch_all_models_file import choicesListRelatedModels
 
 from geo.rules.stack import GEO_RULESTACK
 

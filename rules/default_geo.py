@@ -1,8 +1,8 @@
 
 from django.conf import settings
 
-# from kernel.http import Response
-from kernel.interfaces.interfaces import InterfaceManager
+# from gpm.http import Response
+from gpm.interfaces.interfaces import InterfaceManager
 
 import pycountry
 

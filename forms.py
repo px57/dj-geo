@@ -3,7 +3,7 @@ from django import forms
 
 from geo import validators
 
-from kernel.forms.validators import RelatedModelValidator
+from gpm.forms.validators import RelatedModelValidator
 
 class SelectCityForm(forms.Form):
     """
