@@ -26,6 +26,45 @@ class Countries(BaseMetadataModel):
         verbose_name = 'Country'
         verbose_name_plural = 'Countries'
 
+class DiplomaticZone(BaseMetadataModel):
+    """
+    The states model.
+    """
+
+    """
+    The diplomatic zone model.
+
+    Example:
+        0 -> Is states in USA
+        But 
+        0 -> Is an region in France
+    """
+    depth = models.IntegerField(
+        default=0,
+        help_text='The depth of the zone in the country',
+    )
+
+    country = models.ForeignKey(
+        Countries,
+        on_delete=models.CASCADE,
+        help_text='The country of the zone',
+    )
+
+    zone_parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        help_text='The parent zone',
+    )
+
+    name = models.CharField(
+        max_length=100,
+        help_text='The name of the zone',
+    )
+
+
+
 class Cities(BaseMetadataModel):
     """
     The cities model.

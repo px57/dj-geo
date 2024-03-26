@@ -50,3 +50,12 @@ class CitiesRelatedAdmin(admin.ModelAdmin):
     list_display = (
         'city',
     )
+
+@admin.register(models.DiplomaticZone)
+class DiplomaticZoneAdmin(admin.ModelAdmin):
+    """
+    The diplomatic zone admin.
+    """
+    list_display = (
+        'name',
+    )
